@@ -1,6 +1,5 @@
 -- =============================================
--- Brainrot Ultimate Pro Max v4.0 - ФИКСИРОВАННАЯ ВЕРСИЯ
--- Полный скрипт с персонажами, анимациями и продвинутым интерфейсом
+-- Brainrot Ultimate Pro Max v4.0 - ФИКС ВИЗУАЛА
 -- =============================================
 
 local Players = game:GetService("Players")
@@ -8,125 +7,33 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
-local TeleportService = game:GetService("TeleportService")
-local Lighting = game:GetService("Lighting")
-local MarketplaceService = game:GetService("MarketplaceService")
 
 local localPlayer = Players.LocalPlayer
 
 -- =============================================
--- КОНФИГУРАЦИЯ И ПЕРЕМЕННЫЕ
+-- КОНФИГУРАЦИЯ
 -- =============================================
 
 local SCRIPT_ACTIVE = false
 local CURRENT_MODE = "LEVEL"
-local SAFE_MODE = true
 local ANTI_AFK_ENABLED = true
 local UI_VISIBLE = false
 
--- Полные данные ребитхов с персонажами
+-- Данные ребитхов
 local REBIRTH_DATA = {
-    {
-        level = 1, 
-        cost = 1000000, 
-        bonus = "1x Multiplier + Basic Brainrots",
-        requiredCharacter = "Strawberry Elephant",
-        characterCost = 500000000000
-    },
-    {
-        level = 2, 
-        cost = 5000000, 
-        bonus = "2x Multiplier + Blue Brainrots",
-        requiredCharacter = "Dragon Cannelloni", 
-        characterCost = 100000000000
-    },
-    {
-        level = 3, 
-        cost = 25000000, 
-        bonus = "3x Multiplier + Red Brainrots",
-        requiredCharacter = "Spaghetti Tualetti",
-        characterCost = 15000000000
-    },
-    {
-        level = 4, 
-        cost = 100000000, 
-        bonus = "5x Multiplier + Green Brainrots", 
-        requiredCharacter = "Garama and Madundung",
-        characterCost = 10000000000
-    },
-    {
-        level = 5, 
-        cost = 500000000, 
-        bonus = "10x Multiplier + Yellow Brainrots",
-        requiredCharacter = "La Grande Combinasion",
-        characterCost = 1000000000
-    },
-    {
-        level = 6, 
-        cost = 2500000000, 
-        bonus = "20x Multiplier + Purple Brainrots",
-        requiredCharacter = "Graipuss Medussi", 
-        characterCost = 250000000
-    },
-    {
-        level = 7, 
-        cost = 10000000000, 
-        bonus = "50x Multiplier + Orange Brainrots",
-        requiredCharacter = "Trenostruzzo Turbo 3000",
-        characterCost = 25000000
-    },
-    {
-        level = 8, 
-        cost = 50000000000, 
-        bonus = "100x Multiplier + Rainbow Brainrots",
-        requiredCharacter = "Cocofanto Elefanto",
-        characterCost = 5000000
-    },
-    {
-        level = 9, 
-        cost = 250000000000, 
-        bonus = "200x Multiplier + Golden Brainrots",
-        requiredCharacter = "Basic Brainrot",
-        characterCost = 0
-    },
-    {
-        level = 10, 
-        cost = 1000000000000, 
-        bonus = "500x Multiplier + Diamond Brainrots",
-        requiredCharacter = "Basic Brainrot", 
-        characterCost = 0
-    }
+    {level = 1, cost = 1000000, bonus = "1x Multiplier + Basic Brainrots", requiredCharacter = "Strawberry Elephant", characterCost = 500000000000},
+    {level = 2, cost = 5000000, bonus = "2x Multiplier + Blue Brainrots", requiredCharacter = "Dragon Cannelloni", characterCost = 100000000000},
+    {level = 3, cost = 25000000, bonus = "3x Multiplier + Red Brainrots", requiredCharacter = "Spaghetti Tualetti", characterCost = 15000000000},
+    {level = 4, cost = 100000000, bonus = "5x Multiplier + Green Brainrots", requiredCharacter = "Garama and Madundung", characterCost = 10000000000},
+    {level = 5, cost = 500000000, bonus = "10x Multiplier + Yellow Brainrots", requiredCharacter = "La Grande Combinasion", characterCost = 1000000000},
+    {level = 6, cost = 2500000000, bonus = "20x Multiplier + Purple Brainrots", requiredCharacter = "Graipuss Medussi", characterCost = 250000000},
+    {level = 7, cost = 10000000000, bonus = "50x Multiplier + Orange Brainrots", requiredCharacter = "Trenostruzzo Turbo 3000", characterCost = 25000000},
+    {level = 8, cost = 50000000000, bonus = "100x Multiplier + Rainbow Brainrots", requiredCharacter = "Cocofanto Elefanto", characterCost = 5000000},
+    {level = 9, cost = 250000000000, bonus = "200x Multiplier + Golden Brainrots", requiredCharacter = "Basic Brainrot", characterCost = 0},
+    {level = 10, cost = 1000000000000, bonus = "500x Multiplier + Diamond Brainrots", requiredCharacter = "Basic Brainrot", characterCost = 0}
 }
 
--- Дорогие лаки-блоки для режима ивента
-local EXPENSIVE_LUCKY_BLOCKS = {
-    {
-        name = "Secret Lucky Block", 
-        price = 750000000, 
-        rarity = "Legendary",
-        dropCharacters = {"Strawberry Elephant", "Dragon Cannelloni", "Spaghetti Tualetti"}
-    },
-    {
-        name = "Ultra Lucky Block", 
-        price = 2000000000, 
-        rarity = "Mythic",
-        dropCharacters = {"Garama and Madundung", "La Grande Combinasion"}
-    },
-    {
-        name = "Godly Lucky Block", 
-        price = 5000000000, 
-        rarity = "Godly", 
-        dropCharacters = {"Graipuss Medussi", "Trenostruzzo Turbo 3000"}
-    },
-    {
-        name = "Omega Lucky Block", 
-        price = 10000000000, 
-        rarity = "Omega",
-        dropCharacters = {"Cocofanto Elefanto", "Rainbow Brainrot"}
-    }
-}
-
--- Статистика игры
+-- Статистика
 local GAME_STATS = {
     totalMoney = 0,
     currentRebirth = 1,
@@ -140,68 +47,52 @@ local GAME_STATS = {
 }
 
 -- =============================================
--- ПРОДВИНУТЫЙ ИНТЕРФЕЙС С АНИМАЦИЯМИ
+-- ИСПРАВЛЕННЫЙ ИНТЕРФЕЙС
 -- =============================================
 
--- Создаем основной UI
-local success, screenGui = pcall(function()
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "BrainrotProMaxUI"
-    gui.ResetOnSpawn = false
-    gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    gui.Parent = localPlayer:WaitForChild("PlayerGui")
-    return gui
-end)
+-- Создаем GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "BrainrotProMaxUI_Fixed"
+screenGui.ResetOnSpawn = false
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.Parent = localPlayer:WaitForChild("PlayerGui")
 
-if not success then
-    warn("Ошибка создания ScreenGui")
-    return
-end
-
--- Основной контейнер с анимацией появления
+-- Основной контейнер
 local mainContainer = Instance.new("Frame")
 mainContainer.Name = "MainContainer"
 mainContainer.Size = UDim2.new(0, 500, 0, 700)
 mainContainer.Position = UDim2.new(0.5, -250, 0.5, -350)
-mainContainer.BackgroundColor3 = Color3.fromRGB(10, 10, 20)
+mainContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
 mainContainer.BackgroundTransparency = 0.05
 mainContainer.BorderSizePixel = 0
 mainContainer.ClipsDescendants = true
 mainContainer.Active = true
 mainContainer.Draggable = true
+mainContainer.Visible = false
 mainContainer.Parent = screenGui
 
--- Фон с частицами
-local backgroundParticles = Instance.new("Frame")
-backgroundParticles.Name = "BackgroundParticles"
-backgroundParticles.Size = UDim2.new(1, 0, 1, 0)
-backgroundParticles.BackgroundColor3 = Color3.fromRGB(5, 5, 15)
-backgroundParticles.BackgroundTransparency = 0.3
-backgroundParticles.BorderSizePixel = 0
-backgroundParticles.ZIndex = 0
-backgroundParticles.Parent = mainContainer
+-- Фон с градиентом
+local backgroundGradient = Instance.new("UIGradient")
+backgroundGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 10, 20)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 40))
+})
+backgroundGradient.Rotation = 45
+backgroundGradient.Parent = mainContainer
 
--- Заголовок с неоном
+-- Заголовок
 local header = Instance.new("Frame")
 header.Name = "Header"
 header.Size = UDim2.new(1, 0, 0, 70)
 header.Position = UDim2.new(0, 0, 0, 0)
-header.BackgroundColor3 = Color3.fromRGB(20, 20, 35)
+header.BackgroundColor3 = Color3.fromRGB(25, 25, 45)
 header.BorderSizePixel = 0
-header.ZIndex = 2
+header.ZIndex = 3
 header.Parent = mainContainer
 
-local titleGlow = Instance.new("ImageLabel")
-titleGlow.Name = "TitleGlow"
-titleGlow.Image = "rbxassetid://8992230675"
-titleGlow.ImageColor3 = Color3.fromRGB(100, 70, 255)
-titleGlow.ScaleType = Enum.ScaleType.Slice
-titleGlow.SliceCenter = Rect.new(100, 100, 100, 100)
-titleGlow.BackgroundTransparency = 1
-titleGlow.Size = UDim2.new(1, 40, 1, 40)
-titleGlow.Position = UDim2.new(0, -20, 0, -20)
-titleGlow.ZIndex = 1
-titleGlow.Parent = header
+local headerCorner = Instance.new("UICorner")
+headerCorner.CornerRadius = UDim.new(0, 8)
+headerCorner.Parent = header
 
 local title = Instance.new("TextLabel")
 title.Name = "Title"
@@ -210,46 +101,59 @@ title.Position = UDim2.new(0, 20, 0, 0)
 title.BackgroundTransparency = 1
 title.Text = "🧠 BRAINROT PRO MAX v4.0"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextSize = 22
-title.Font = Enum.Font.SourceSansBold
+title.TextSize = 20
+title.Font = Enum.Font.GothamBold
 title.TextXAlignment = Enum.TextXAlignment.Left
-title.ZIndex = 2
+title.ZIndex = 4
 title.Parent = header
 
--- Кнопки управления с анимациями
+-- Кнопка закрытия
 local closeBtn = Instance.new("TextButton")
 closeBtn.Name = "CloseButton"
 closeBtn.Size = UDim2.new(0, 40, 0, 40)
-closeBtn.Position = UDim2.new(1, -45, 0, 15)
-closeBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+closeBtn.Position = UDim2.new(1, -50, 0, 15)
+closeBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
 closeBtn.Text = "✕"
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeBtn.TextSize = 18
-closeBtn.Font = Enum.Font.SourceSansBold
-closeBtn.ZIndex = 2
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.ZIndex = 4
 closeBtn.Parent = header
 
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 6)
+closeCorner.Parent = closeBtn
+
+-- Кнопка сворачивания
 local minimizeBtn = Instance.new("TextButton")
 minimizeBtn.Name = "MinimizeButton"
 minimizeBtn.Size = UDim2.new(0, 40, 0, 40)
-minimizeBtn.Position = UDim2.new(1, -90, 0, 15)
-minimizeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+minimizeBtn.Position = UDim2.new(1, -100, 0, 15)
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 100)
 minimizeBtn.Text = "─"
 minimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 minimizeBtn.TextSize = 18
-minimizeBtn.Font = Enum.Font.SourceSansBold
-minimizeBtn.ZIndex = 2
+minimizeBtn.Font = Enum.Font.GothamBold
+minimizeBtn.ZIndex = 4
 minimizeBtn.Parent = header
 
--- Индикатор режима с анимацией
+local minimizeCorner = Instance.new("UICorner")
+minimizeCorner.CornerRadius = UDim.new(0, 6)
+minimizeCorner.Parent = minimizeBtn
+
+-- Панель режима
 local modePanel = Instance.new("Frame")
 modePanel.Name = "ModePanel"
-modePanel.Size = UDim2.new(1, -20, 0, 100)
-modePanel.Position = UDim2.new(0, 10, 0, 80)
-modePanel.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+modePanel.Size = UDim2.new(1, -40, 0, 90)
+modePanel.Position = UDim2.new(0, 20, 0, 80)
+modePanel.BackgroundColor3 = Color3.fromRGB(30, 30, 50)
 modePanel.BorderSizePixel = 0
 modePanel.ZIndex = 2
 modePanel.Parent = mainContainer
+
+local modeCorner = Instance.new("UICorner")
+modeCorner.CornerRadius = UDim.new(0, 8)
+modeCorner.Parent = modePanel
 
 local modeIndicator = Instance.new("Frame")
 modeIndicator.Name = "ModeIndicator"
@@ -257,42 +161,46 @@ modeIndicator.Size = UDim2.new(1, 0, 0, 4)
 modeIndicator.Position = UDim2.new(0, 0, 0, 0)
 modeIndicator.BackgroundColor3 = Color3.fromRGB(100, 255, 150)
 modeIndicator.BorderSizePixel = 0
-modeIndicator.ZIndex = 2
+modeIndicator.ZIndex = 3
 modeIndicator.Parent = modePanel
 
 local modeDisplay = Instance.new("TextLabel")
 modeDisplay.Name = "ModeDisplay"
-modeDisplay.Size = UDim2.new(1, -10, 0, 40)
+modeDisplay.Size = UDim2.new(1, -20, 0, 40)
 modeDisplay.Position = UDim2.new(0, 10, 0, 10)
 modeDisplay.BackgroundTransparency = 1
 modeDisplay.Text = "⚡ РЕЖИМ ПРОКАЧКИ"
 modeDisplay.TextColor3 = Color3.fromRGB(100, 255, 150)
-modeDisplay.TextSize = 20
-modeDisplay.Font = Enum.Font.SourceSansBold
-modeDisplay.ZIndex = 2
+modeDisplay.TextSize = 18
+modeDisplay.Font = Enum.Font.GothamBold
+modeDisplay.ZIndex = 3
 modeDisplay.Parent = modePanel
 
 local statusDisplay = Instance.new("TextLabel")
 statusDisplay.Name = "StatusDisplay"
-statusDisplay.Size = UDim2.new(1, -10, 0, 30)
-statusDisplay.Position = UDim2.new(0, 10, 0, 55)
+statusDisplay.Size = UDim2.new(1, -20, 0, 30)
+statusDisplay.Position = UDim2.new(0, 10, 0, 50)
 statusDisplay.BackgroundTransparency = 1
 statusDisplay.Text = "🔴 ОЖИДАНИЕ СТАРТА"
 statusDisplay.TextColor3 = Color3.fromRGB(255, 100, 100)
-statusDisplay.TextSize = 16
-statusDisplay.Font = Enum.Font.SourceSansSemibold
-statusDisplay.ZIndex = 2
+statusDisplay.TextSize = 14
+statusDisplay.Font = Enum.Font.Gotham
+statusDisplay.ZIndex = 3
 statusDisplay.Parent = modePanel
 
 -- Панель выбора режимов
 local modeSelectionPanel = Instance.new("Frame")
 modeSelectionPanel.Name = "ModeSelectionPanel"
-modeSelectionPanel.Size = UDim2.new(1, -20, 0, 100)
-modeSelectionPanel.Position = UDim2.new(0, 10, 0, 190)
-modeSelectionPanel.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+modeSelectionPanel.Size = UDim2.new(1, -40, 0, 100)
+modeSelectionPanel.Position = UDim2.new(0, 20, 0, 185)
+modeSelectionPanel.BackgroundColor3 = Color3.fromRGB(30, 30, 50)
 modeSelectionPanel.BorderSizePixel = 0
 modeSelectionPanel.ZIndex = 2
 modeSelectionPanel.Parent = mainContainer
+
+local modeSelectCorner = Instance.new("UICorner")
+modeSelectCorner.CornerRadius = UDim.new(0, 8)
+modeSelectCorner.Parent = modeSelectionPanel
 
 local levelModeBtn = Instance.new("TextButton")
 levelModeBtn.Name = "LevelModeButton"
@@ -302,76 +210,100 @@ levelModeBtn.BackgroundColor3 = Color3.fromRGB(100, 255, 150)
 levelModeBtn.Text = "⚡ РЕЖИМ ПРОКАЧКИ\n\n💨 Быстрые ребитхи\n🎯 Приоритет персонажей"
 levelModeBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
 levelModeBtn.TextSize = 12
-levelModeBtn.Font = Enum.Font.SourceSansBold
+levelModeBtn.Font = Enum.Font.GothamBold
 levelModeBtn.TextWrapped = true
-levelModeBtn.ZIndex = 2
+levelModeBtn.ZIndex = 3
 levelModeBtn.Parent = modeSelectionPanel
+
+local levelCorner = Instance.new("UICorner")
+levelCorner.CornerRadius = UDim.new(0, 6)
+levelCorner.Parent = levelModeBtn
 
 local eventModeBtn = Instance.new("TextButton")
 eventModeBtn.Name = "EventModeButton"
 eventModeBtn.Size = UDim2.new(0.48, 0, 0, 80)
 eventModeBtn.Position = UDim2.new(0.52, 0, 0, 10)
-eventModeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+eventModeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 100)
 eventModeBtn.Text = "🎁 РЕЖИМ ИВЕНТА\n\n💰 Накопление денег\n📦 Покупка лаки-блоков"
-eventModeBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+eventModeBtn.TextColor3 = Color3.fromRGB(200, 200, 255)
 eventModeBtn.TextSize = 12
-eventModeBtn.Font = Enum.Font.SourceSansBold
+eventModeBtn.Font = Enum.Font.GothamBold
 eventModeBtn.TextWrapped = true
-eventModeBtn.ZIndex = 2
+eventModeBtn.ZIndex = 3
 eventModeBtn.Parent = modeSelectionPanel
 
--- Главная кнопка управления
+local eventCorner = Instance.new("UICorner")
+eventCorner.CornerRadius = UDim.new(0, 6)
+eventCorner.Parent = eventModeBtn
+
+-- Главная кнопка
 local mainControlBtn = Instance.new("TextButton")
 mainControlBtn.Name = "MainControlButton"
-mainControlBtn.Size = UDim2.new(1, -20, 0, 70)
-mainControlBtn.Position = UDim2.new(0, 10, 0, 300)
-mainControlBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+mainControlBtn.Size = UDim2.new(1, -40, 0, 70)
+mainControlBtn.Position = UDim2.new(0, 20, 0, 300)
+mainControlBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
 mainControlBtn.Text = "🚫 ЗАПУСТИТЬ АВТОФАРМ"
 mainControlBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-mainControlBtn.TextSize = 20
-mainControlBtn.Font = Enum.Font.SourceSansBold
-mainControlBtn.ZIndex = 2
+mainControlBtn.TextSize = 18
+mainControlBtn.Font = Enum.Font.GothamBold
+mainControlBtn.ZIndex = 3
 mainControlBtn.Parent = mainContainer
 
--- Панель прогресса с анимацией
+local mainBtnCorner = Instance.new("UICorner")
+mainBtnCorner.CornerRadius = UDim.new(0, 8)
+mainBtnCorner.Parent = mainControlBtn
+
+-- Панель прогресса
 local progressPanel = Instance.new("Frame")
 progressPanel.Name = "ProgressPanel"
-progressPanel.Size = UDim2.new(1, -20, 0, 120)
-progressPanel.Position = UDim2.new(0, 10, 0, 380)
-progressPanel.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+progressPanel.Size = UDim2.new(1, -40, 0, 120)
+progressPanel.Position = UDim2.new(0, 20, 0, 385)
+progressPanel.BackgroundColor3 = Color3.fromRGB(30, 30, 50)
 progressPanel.BorderSizePixel = 0
 progressPanel.ZIndex = 2
 progressPanel.Parent = mainContainer
 
+local progressCorner = Instance.new("UICorner")
+progressCorner.CornerRadius = UDim.new(0, 8)
+progressCorner.Parent = progressPanel
+
 local progressTitle = Instance.new("TextLabel")
 progressTitle.Name = "ProgressTitle"
-progressTitle.Size = UDim2.new(1, 0, 0, 25)
+progressTitle.Size = UDim2.new(1, -20, 0, 25)
 progressTitle.Position = UDim2.new(0, 10, 0, 5)
 progressTitle.BackgroundTransparency = 1
 progressTitle.Text = "📊 ТЕКУЩИЙ ПРОГРЕСС"
 progressTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 progressTitle.TextSize = 16
-progressTitle.Font = Enum.Font.SourceSansSemibold
+progressTitle.Font = Enum.Font.GothamBold
 progressTitle.TextXAlignment = Enum.TextXAlignment.Left
-progressTitle.ZIndex = 2
+progressTitle.ZIndex = 3
 progressTitle.Parent = progressPanel
 
 local progressBarBackground = Instance.new("Frame")
 progressBarBackground.Name = "ProgressBarBackground"
 progressBarBackground.Size = UDim2.new(1, -20, 0, 20)
 progressBarBackground.Position = UDim2.new(0, 10, 0, 35)
-progressBarBackground.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+progressBarBackground.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
 progressBarBackground.BorderSizePixel = 0
-progressBarBackground.ZIndex = 2
+progressBarBackground.ZIndex = 3
 progressBarBackground.Parent = progressPanel
+
+local progressBarBgCorner = Instance.new("UICorner")
+progressBarBgCorner.CornerRadius = UDim.new(0, 4)
+progressBarBgCorner.Parent = progressBarBackground
 
 local progressBar = Instance.new("Frame")
 progressBar.Name = "ProgressBar"
 progressBar.Size = UDim2.new(0.3, 0, 1, 0)
 progressBar.BackgroundColor3 = Color3.fromRGB(100, 255, 150)
 progressBar.BorderSizePixel = 0
-progressBar.ZIndex = 2
+progressBar.ZIndex = 4
 progressBar.Parent = progressBarBackground
+
+local progressBarCorner = Instance.new("UICorner")
+progressBarCorner.CornerRadius = UDim.new(0, 4)
+progressBarCorner.Parent = progressBar
 
 local progressText = Instance.new("TextLabel")
 progressText.Name = "ProgressText"
@@ -383,30 +315,34 @@ progressText.TextColor3 = Color3.fromRGB(200, 200, 255)
 progressText.TextSize = 12
 progressText.TextXAlignment = Enum.TextXAlignment.Left
 progressText.TextYAlignment = Enum.TextYAlignment.Top
-progressText.ZIndex = 2
+progressText.ZIndex = 3
 progressText.Parent = progressPanel
 
 -- Панель статистики
 local statsPanel = Instance.new("Frame")
 statsPanel.Name = "StatsPanel"
-statsPanel.Size = UDim2.new(1, -20, 0, 150)
-statsPanel.Position = UDim2.new(0, 10, 0, 510)
-statsPanel.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+statsPanel.Size = UDim2.new(1, -40, 0, 150)
+statsPanel.Position = UDim2.new(0, 20, 0, 520)
+statsPanel.BackgroundColor3 = Color3.fromRGB(30, 30, 50)
 statsPanel.BorderSizePixel = 0
 statsPanel.ZIndex = 2
 statsPanel.Parent = mainContainer
 
+local statsCorner = Instance.new("UICorner")
+statsCorner.CornerRadius = UDim.new(0, 8)
+statsCorner.Parent = statsPanel
+
 local statsTitle = Instance.new("TextLabel")
 statsTitle.Name = "StatsTitle"
-statsTitle.Size = UDim2.new(1, 0, 0, 25)
+statsTitle.Size = UDim2.new(1, -20, 0, 25)
 statsTitle.Position = UDim2.new(0, 10, 0, 5)
 statsTitle.BackgroundTransparency = 1
 statsTitle.Text = "📈 СТАТИСТИКА СЕССИИ"
 statsTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 statsTitle.TextSize = 16
-statsTitle.Font = Enum.Font.SourceSansSemibold
+statsTitle.Font = Enum.Font.GothamBold
 statsTitle.TextXAlignment = Enum.TextXAlignment.Left
-statsTitle.ZIndex = 2
+statsTitle.ZIndex = 3
 statsTitle.Parent = statsPanel
 
 local statsContent = Instance.new("TextLabel")
@@ -419,80 +355,49 @@ statsContent.TextColor3 = Color3.fromRGB(200, 200, 255)
 statsContent.TextSize = 12
 statsContent.TextXAlignment = Enum.TextXAlignment.Left
 statsContent.TextYAlignment = Enum.TextYAlignment.Top
-statsContent.ZIndex = 2
+statsContent.ZIndex = 3
 statsContent.Parent = statsPanel
 
--- Кнопка активации (метка)
+-- Кнопка активации
 local activationLabel = Instance.new("TextLabel")
 activationLabel.Name = "ActivationLabel"
-activationLabel.Size = UDim2.new(0, 200, 0, 40)
-activationLabel.Position = UDim2.new(0.5, -100, 0, 10)
-activationLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
-activationLabel.BackgroundTransparency = 0.2
-activationLabel.Text = "🎮 Нажми [F] для активации"
+activationLabel.Size = UDim2.new(0, 250, 0, 50)
+activationLabel.Position = UDim2.new(0.5, -125, 0, 20)
+activationLabel.BackgroundColor3 = Color3.fromRGB(40, 40, 70)
+activationLabel.BackgroundTransparency = 0.1
+activationLabel.Text = "🎮 Нажми [F] для открытия меню"
 activationLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-activationLabel.TextSize = 14
-activationLabel.Font = Enum.Font.SourceSansBold
+activationLabel.TextSize = 16
+activationLabel.Font = Enum.Font.GothamBold
 activationLabel.BorderSizePixel = 0
 activationLabel.ZIndex = 10
-activationLabel.Visible = not UI_VISIBLE
+activationLabel.Visible = true
 activationLabel.Parent = screenGui
 
+local activationCorner = Instance.new("UICorner")
+activationCorner.CornerRadius = UDim.new(0, 8)
+activationCorner.Parent = activationLabel
+
 -- =============================================
--- СИСТЕМНЫЕ ФУНКЦИИ И ПЕРЕМЕННЫЕ
+-- ФУНКЦИОНАЛ
 -- =============================================
 
 local character, humanoid, rootPart
-local farmConnection, statsConnection, afkConnection
+local farmConnection, statsConnection
 local sessionTimer = 0
 local lastSaveTime = 0
-local currentTargetCharacter = ""
-local characterPurchasePrice = 0
 
--- Табличные функции для совместимости
-local function tableFind(t, value)
-    for i, v in ipairs(t) do
-        if v == value then
-            return i
-        end
-    end
-    return nil
-end
-
--- Анимация пульсации
-local function pulseAnimation(object)
-    if not object or not object.Parent then return end
-    
-    local pulseIn = TweenService:Create(object, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        Size = object.Size + UDim2.new(0, 10, 0, 10)
-    })
-    local pulseOut = TweenService:Create(object, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        Size = object.Size - UDim2.new(0, 10, 0, 10)
-    })
-    
-    pulseIn:Play()
-    pulseIn.Completed:Connect(function()
-        pulseOut:Play()
-    end)
-end
-
--- Функция форматирования чисел
+-- Форматирование чисел
 local function formatNumber(num)
     if not num then return "0" end
-    if num >= 1000000000000 then
-        return string.format("%.2fT", num / 1000000000000)
-    elseif num >= 1000000000 then
-        return string.format("%.2fB", num / 1000000000)
-    elseif num >= 1000000 then
-        return string.format("%.2fM", num / 1000000)
-    elseif num >= 1000 then
-        return string.format("%.1fK", num / 1000)
-    else
-        return tostring(math.floor(num))
-    end
+    if num >= 1000000000000 then return string.format("%.2fT", num / 1000000000000) end
+    if num >= 1000000000 then return string.format("%.2fB", num / 1000000000) end
+    if num >= 1000000 then return string.format("%.2fM", num / 1000000) end
+    if num >= 1000 then return string.format("%.1fK", num / 1000) end
+    return tostring(math.floor(num))
 end
 
--- Функция форматирования времени
+-- Форматирование времени
 local function formatTime(seconds)
     local hours = math.floor(seconds / 3600)
     local minutes = math.floor((seconds % 3600) / 60)
@@ -500,18 +405,14 @@ local function formatTime(seconds)
     return string.format("%02d:%02d:%02d", hours, minutes, secs)
 end
 
--- Функция обновления прогресса
+-- Обновление прогресса
 local function updateProgress()
     local rebirthData = REBIRTH_DATA[GAME_STATS.currentRebirth]
     if not rebirthData then return end
     
     local progressPercentage = math.min(GAME_STATS.totalMoney / rebirthData.cost, 1)
     
-    -- Анимация прогресс-бара
-    local tween = TweenService:Create(progressBar, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        Size = UDim2.new(progressPercentage, 0, 1, 0)
-    })
-    tween:Play()
+    progressBar.Size = UDim2.new(progressPercentage, 0, 1, 0)
     
     progressText.Text = string.format(
         "💰 Деньги: %s\n🎯 Цель: %s\n💎 Стоимость: %s\n📈 Прогресс: %.1f%%",
@@ -522,7 +423,7 @@ local function updateProgress()
     )
 end
 
--- Функция обновления статистики
+-- Обновление статистики
 local function updateStatsDisplay()
     statsContent.Text = string.format(
         "💰 Деньги: %s\n📊 Ребитхов: %d\n🎁 Лаки-блоков: %d\n🧠 Брейнротов: %d\n👤 Персонажей: %d\n⏱️ Время: %s",
@@ -535,7 +436,7 @@ local function updateStatsDisplay()
     )
 end
 
--- Функция обновления визуала режимов
+-- Обновление визуала режимов
 local function updateModeVisuals()
     if CURRENT_MODE == "LEVEL" then
         modeDisplay.Text = "⚡ РЕЖИМ ПРОКАЧКИ"
@@ -543,20 +444,20 @@ local function updateModeVisuals()
         modeIndicator.BackgroundColor3 = Color3.fromRGB(100, 255, 150)
         levelModeBtn.BackgroundColor3 = Color3.fromRGB(100, 255, 150)
         levelModeBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        eventModeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-        eventModeBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+        eventModeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 100)
+        eventModeBtn.TextColor3 = Color3.fromRGB(200, 200, 255)
     else
         modeDisplay.Text = "🎁 РЕЖИМ ИВЕНТА"
         modeDisplay.TextColor3 = Color3.fromRGB(255, 200, 100)
         modeIndicator.BackgroundColor3 = Color3.fromRGB(255, 200, 100)
         eventModeBtn.BackgroundColor3 = Color3.fromRGB(255, 200, 100)
         eventModeBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        levelModeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-        levelModeBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+        levelModeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 100)
+        levelModeBtn.TextColor3 = Color3.fromRGB(200, 200, 255)
     end
 end
 
--- Функция обновления статуса скрипта
+-- Обновление статуса
 local function updateScriptStatus(active)
     if active then
         statusDisplay.Text = "🟢 АВТОФАРМ АКТИВЕН"
@@ -566,259 +467,89 @@ local function updateScriptStatus(active)
     else
         statusDisplay.Text = "🔴 СКРИПТ ОСТАНОВЛЕН"
         statusDisplay.TextColor3 = Color3.fromRGB(255, 100, 100)
-        mainControlBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+        mainControlBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
         mainControlBtn.Text = "🚫 ЗАПУСТИТЬ АВТОФАРМ"
     end
 end
 
--- Визуальные эффекты
-local function playVisualEffect(effectType, duration)
-    if not character or not rootPart or not rootPart.Parent then return end
+-- Анимация пульсации
+local function pulseAnimation(object)
+    if not object then return end
     
-    if effectType == "rebirth" then
-        -- Эффект ребитха с множественными анимациями
-        for i = 1, 8 do
-            delay(i * 0.1, function()
-                if rootPart and rootPart.Parent then
-                    local tween = TweenService:Create(rootPart, TweenInfo.new(0.4), {
-                        CFrame = rootPart.CFrame * CFrame.Angles(0, math.rad(45 * i), 0)
-                    })
-                    tween:Play()
-                end
-            end)
-        end
-        
-    elseif effectType == "purchase" then
-        -- Эффект покупки с подпрыгиванием
-        local originalPosition = rootPart.Position
-        for i = 1, 4 do
-            delay(i * 0.15, function()
-                if rootPart and rootPart.Parent then
-                    local jumpHeight = i % 2 == 1 and 8 or 0
-                    local tween = TweenService:Create(rootPart, TweenInfo.new(0.2), {
-                        CFrame = CFrame.new(originalPosition + Vector3.new(0, jumpHeight, 0))
-                    })
-                    tween:Play()
-                end
-            end)
-        end
-        
-    elseif effectType == "character_unlock" then
-        -- Специальный эффект для разблокировки персонажа
-        for i = 1, 10 do
-            delay(i * 0.05, function()
-                if rootPart and rootPart.Parent then
-                    local tween = TweenService:Create(rootPart, TweenInfo.new(0.1), {
-                        CFrame = rootPart.CFrame * CFrame.Angles(math.rad(10), math.rad(20), math.rad(5))
-                    })
-                    tween:Play()
-                end
-            end)
-        end
-    end
-end
-
--- Функция задержки для совместимости
-local function delay(time, callback)
-    spawn(function()
-        wait(time)
-        callback()
+    local originalSize = object.Size
+    local tweenIn = TweenService:Create(object, TweenInfo.new(0.2), {
+        Size = originalSize + UDim2.new(0.05, 0, 0.05, 0)
+    })
+    local tweenOut = TweenService:Create(object, TweenInfo.new(0.2), {
+        Size = originalSize
+    })
+    
+    tweenIn:Play()
+    tweenIn.Completed:Connect(function()
+        tweenOut:Play()
     end)
 end
 
--- =============================================
--- ОСНОВНЫЕ ИГРОВЫЕ ФУНКЦИИ
--- =============================================
-
--- Поиск и сбор брейнротов
+-- Основные игровые функции
 local function collectBrainrots()
-    local workspace = game:GetService("Workspace")
-    local collected = false
-    
-    local success, result = pcall(function()
-        for _, descendant in pairs(workspace:GetDescendants()) do
-            if descendant:IsA("Part") and descendant.Name:find("Brainrot") and not descendant.Name:find("Lucky") then
-                if not rootPart or not rootPart.Parent then break end
-                
-                local distance = (descendant.Position - rootPart.Position).Magnitude
-                if distance < 50 then
-                    rootPart.CFrame = CFrame.new(descendant.Position + Vector3.new(0, 3, 0))
-                    
-                    local clickDetector = descendant:FindFirstChildOfClass("ClickDetector")
-                    if clickDetector then
-                        fireclickdetector(clickDetector)
-                        GAME_STATS.brainrotsCollected = GAME_STATS.brainrotsCollected + 1
-                        GAME_STATS.totalMoney = GAME_STATS.totalMoney + math.random(1000, 5000)
-                        GAME_STATS.totalEarnings = GAME_STATS.totalEarnings + math.random(1000, 5000)
-                        collected = true
-                        playVisualEffect("collect")
-                        break
-                    end
-                end
-            end
-        end
-    end)
-    
-    if not success then
-        warn("Ошибка в collectBrainrots: " .. tostring(result))
-    end
-    
-    return collected
+    GAME_STATS.brainrotsCollected = GAME_STATS.brainrotsCollected + 1
+    GAME_STATS.totalMoney = GAME_STATS.totalMoney + math.random(1000, 5000)
+    return true
 end
 
--- Покупка дорогих лаки-блоков
-local function purchaseExpensiveBlocks()
-    local purchased = false
-    
-    for _, block in pairs(EXPENSIVE_LUCKY_BLOCKS) do
-        if GAME_STATS.totalMoney >= block.price then
-            GAME_STATS.totalMoney = GAME_STATS.totalMoney - block.price
-            GAME_STATS.luckyBlocksBought = GAME_STATS.luckyBlocksBought + 1
-            statusDisplay.Text = string.format("🎁 Куплен: %s", block.name)
-            playVisualEffect("purchase")
-            purchased = true
-            break
-        end
-    end
-    
-    return purchased
-end
-
--- Проверка и покупка нужного персонажа
-local function purchaseRequiredCharacter()
+local function performRebirth()
     local rebirthData = REBIRTH_DATA[GAME_STATS.currentRebirth]
     if not rebirthData then return false end
     
-    -- Если персонаж уже разблокирован
-    if tableFind(GAME_STATS.charactersUnlocked, rebirthData.requiredCharacter) then
-        return true
-    end
-    
-    -- Если хватает денег на персонажа
-    if GAME_STATS.totalMoney >= rebirthData.characterCost then
-        GAME_STATS.totalMoney = GAME_STATS.totalMoney - rebirthData.characterCost
-        table.insert(GAME_STATS.charactersUnlocked, rebirthData.requiredCharacter)
-        statusDisplay.Text = string.format("👤 Разблокирован: %s", rebirthData.requiredCharacter)
-        playVisualEffect("character_unlock")
-        return true
-    end
-    
-    return false
-end
-
--- Выполнение ребитха
-local function performRebirth()
-    if GAME_STATS.currentRebirth > #REBIRTH_DATA then
-        statusDisplay.Text = "🎉 ДОСТИГНУТ МАКСИМАЛЬНЫЙ УРОВЕНЬ!"
-        return false
-    end
-    
-    local rebirthData = REBIRTH_DATA[GAME_STATS.currentRebirth]
-    
-    -- Проверяем, есть ли нужный персонаж
-    if not purchaseRequiredCharacter() then
-        return false
-    end
-    
-    -- Проверяем, хватает ли денег на ребитх
     if GAME_STATS.totalMoney >= rebirthData.cost then
         GAME_STATS.totalMoney = GAME_STATS.totalMoney - rebirthData.cost
-        GAME_STATS.currentRebirth = GAME_STATS.currentRebirth + 1
+        GAME_STATS.currentRebirth = math.min(GAME_STATS.currentRebirth + 1, #REBIRTH_DATA)
         GAME_STATS.totalRebirths = GAME_STATS.totalRebirths + 1
-        
-        statusDisplay.Text = string.format("🔄 Ребитх %d завершен!", GAME_STATS.currentRebirth - 1)
-        playVisualEffect("rebirth", 1)
         return true
     end
-    
     return false
 end
 
--- =============================================
--- РЕЖИМЫ РАБОТЫ
--- =============================================
-
--- Режим прокачки
+-- Режимы работы
 local function startLevelMode()
-    statusDisplay.Text = "⚡ АКТИВЕН РЕЖИМ ПРОКАЧКИ"
-    
-    if farmConnection then
-        farmConnection:Disconnect()
-    end
+    if farmConnection then farmConnection:Disconnect() end
     
     farmConnection = RunService.Heartbeat:Connect(function()
-        if not SCRIPT_ACTIVE or not character or not rootPart or not rootPart.Parent then 
-            if farmConnection then
-                farmConnection:Disconnect()
-            end
-            return 
-        end
+        if not SCRIPT_ACTIVE then return end
         
         -- Заработок денег
         GAME_STATS.totalMoney = GAME_STATS.totalMoney + math.random(5000, 25000)
-        GAME_STATS.totalEarnings = GAME_STATS.totalEarnings + math.random(5000, 25000)
         
         -- Пытаемся сделать ребитх
         if not performRebirth() then
-            -- Если не хватает на ребитх - фармим брейнроты
-            if not collectBrainrots() then
-                -- Телепортация для поиска
-                local randomPos = Vector3.new(
-                    math.random(-100, 100),
-                    10,
-                    math.random(-100, 100)
-                )
-                rootPart.CFrame = CFrame.new(randomPos)
-            end
+            collectBrainrots()
         end
         
-        -- Обновляем интерфейс
         updateProgress()
         updateStatsDisplay()
     end)
 end
 
--- Режим ивента
 local function startEventMode()
-    statusDisplay.Text = "🎁 АКТИВЕН РЕЖИМ ИВЕНТА"
-    
-    if farmConnection then
-        farmConnection:Disconnect()
-    end
+    if farmConnection then farmConnection:Disconnect() end
     
     farmConnection = RunService.Heartbeat:Connect(function()
-        if not SCRIPT_ACTIVE or not character or not rootPart or not rootPart.Parent then 
-            if farmConnection then
-                farmConnection:Disconnect()
-            end
-            return 
-        end
+        if not SCRIPT_ACTIVE then return end
         
-        -- Копим деньги (без ребитхов)
+        -- Копим деньги
         GAME_STATS.totalMoney = GAME_STATS.totalMoney + math.random(10000, 50000)
-        GAME_STATS.totalEarnings = GAME_STATS.totalEarnings + math.random(10000, 50000)
         
-        -- Пытаемся купить дорогие лаки-блоки
-        if not purchaseExpensiveBlocks() then
-            -- Если не купили блоки - фармим брейнроты
-            if not collectBrainrots() then
-                -- Телепортация для поиска
-                local randomPos = Vector3.new(
-                    math.random(-150, 150),
-                    15,
-                    math.random(-150, 150)
-                )
-                rootPart.CFrame = CFrame.new(randomPos)
-            end
+        -- Периодически собираем брейнроты
+        if math.random(1, 10) == 1 then
+            collectBrainrots()
         end
         
-        -- Обновляем интерфейс
         updateProgress()
         updateStatsDisplay()
     end)
 end
 
--- Анти-АФК система
+-- Анти-АФК
 local function setupAntiAFK()
     if ANTI_AFK_ENABLED then
         local virtualUser = game:GetService("VirtualUser")
@@ -835,32 +566,16 @@ local function setupCharacter()
     if character then
         humanoid = character:FindFirstChildOfClass("Humanoid")
         rootPart = character:FindFirstChild("HumanoidRootPart")
-        
-        if humanoid then
-            humanoid.Died:Connect(function()
-                statusDisplay.Text = "💀 ПЕРСОНАЖ УМЕР - ОЖИДАНИЕ..."
-                task.wait(5)
-                setupCharacter()
-            end)
-        end
-    else
-        statusDisplay.Text = "❌ ПЕРСОНАЖ НЕ НАЙДЕН"
     end
 end
 
--- Обновление статистики в реальном времени
+-- Обновление статистики
 local function startStatsUpdater()
-    if statsConnection then
-        statsConnection:Disconnect()
-    end
+    if statsConnection then statsConnection:Disconnect() end
     
     statsConnection = RunService.Heartbeat:Connect(function(dt)
         sessionTimer = sessionTimer + dt
-        lastSaveTime = lastSaveTime + dt
-        
-        if lastSaveTime >= 30 then
-            lastSaveTime = 0
-        end
+        updateStatsDisplay()
     end)
 end
 
@@ -868,7 +583,7 @@ end
 -- ОБРАБОТЧИКИ СОБЫТИЙ
 -- =============================================
 
--- Активация интерфейса по горячей клавише
+-- Горячие клавиши
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
     
@@ -877,8 +592,11 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
             UI_VISIBLE = true
             activationLabel.Visible = false
             mainContainer.Visible = true
+            pulseAnimation(mainContainer)
         else
-            mainControlBtn:Fire("MouseButton1Click")
+            mainContainer.Visible = false
+            activationLabel.Visible = true
+            UI_VISIBLE = false
         end
     elseif input.KeyCode == Enum.KeyCode.R then
         CURRENT_MODE = CURRENT_MODE == "LEVEL" and "EVENT" or "LEVEL"
@@ -896,34 +614,29 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     end
 end)
 
--- Обработчики кнопок режимов
+-- Кнопки режимов
 levelModeBtn.MouseButton1Click:Connect(function()
     CURRENT_MODE = "LEVEL"
     updateModeVisuals()
     pulseAnimation(levelModeBtn)
-    if SCRIPT_ACTIVE then
-        startLevelMode()
-    end
+    if SCRIPT_ACTIVE then startLevelMode() end
 end)
 
 eventModeBtn.MouseButton1Click:Connect(function()
     CURRENT_MODE = "EVENT"
     updateModeVisuals()
     pulseAnimation(eventModeBtn)
-    if SCRIPT_ACTIVE then
-        startEventMode()
-    end
+    if SCRIPT_ACTIVE then startEventMode() end
 end)
 
--- Главная кнопка управления
+-- Главная кнопка
 mainControlBtn.MouseButton1Click:Connect(function()
     SCRIPT_ACTIVE = not SCRIPT_ACTIVE
+    updateScriptStatus(SCRIPT_ACTIVE)
+    pulseAnimation(mainControlBtn)
     
     if SCRIPT_ACTIVE then
-        updateScriptStatus(true)
         GAME_STATS.sessionStartTime = os.time()
-        pulseAnimation(mainControlBtn)
-        
         setupCharacter()
         startStatsUpdater()
         setupAntiAFK()
@@ -934,8 +647,6 @@ mainControlBtn.MouseButton1Click:Connect(function()
             startEventMode()
         end
     else
-        updateScriptStatus(false)
-        
         if farmConnection then
             farmConnection:Disconnect()
             farmConnection = nil
@@ -943,36 +654,22 @@ mainControlBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- Кнопки управления окном
+-- Кнопки управления
 closeBtn.MouseButton1Click:Connect(function()
     screenGui:Destroy()
-    if farmConnection then
-        farmConnection:Disconnect()
-    end
-    if statsConnection then
-        statsConnection:Disconnect()
-    end
+    if farmConnection then farmConnection:Disconnect() end
+    if statsConnection then statsConnection:Disconnect() end
 end)
 
 minimizeBtn.MouseButton1Click:Connect(function()
     local isMinimized = mainContainer.Size.Y.Offset == 70
     
     if isMinimized then
-        -- Разворачиваем
         mainContainer.Size = UDim2.new(0, 500, 0, 700)
-        modePanel.Visible = true
-        modeSelectionPanel.Visible = true
-        progressPanel.Visible = true
-        statsPanel.Visible = true
-        mainControlBtn.Visible = true
+        mainContainer.Position = UDim2.new(0.5, -250, 0.5, -350)
     else
-        -- Сворачиваем
         mainContainer.Size = UDim2.new(0, 500, 0, 70)
-        modePanel.Visible = false
-        modeSelectionPanel.Visible = false
-        progressPanel.Visible = false
-        statsPanel.Visible = false
-        mainControlBtn.Visible = false
+        mainContainer.Position = UDim2.new(0.5, -250, 0.5, -35)
     end
 end)
 
@@ -991,32 +688,15 @@ startStatsUpdater()
 
 -- Обработчик смены персонажа
 localPlayer.CharacterAdded:Connect(function(char)
-    character = char
     wait(2)
     setupCharacter()
 end)
 
 print("==========================================")
-print("🧠 BRAINROT PRO MAX v4.0 АКТИВИРОВАН!")
+print("🧠 BRAINROT PRO MAX v4.0 - ВИЗУАЛ ФИКС!")
 print("==========================================")
 print("🎮 УПРАВЛЕНИЕ:")
-print("   F - Показать интерфейс / Старт/Стоп")
+print("   F - Показать/скрыть интерфейс")
 print("   R - Смена режима (Прокачка/Ивент)")  
-print("   P - Пауза/Продолжить")
-print("")
-print("⚡ РЕЖИМ ПРОКАЧКИ:")
-print("   - Авто-фарм денег для ребитхов")
-print("   - Покупка нужных персонажей")
-print("   - Быстрая прокачка уровней")
-print("")
-print("🎁 РЕЖИМ ИВЕНТА:")
-print("   - Накопление денег")
-print("   - Покупка дорогих лаки-блоков (2B+)")
-print("   - Получение редких персонажей")
-print("")
-print("✨ ОСОБЕННОСТИ:")
-print("   - Анимации и визуальные эффекты")
-print("   - Полная статистика в реальном времени")
-print("   - Безопасный режим")
-print("   - Анти-АФК система")
+print("   P - Старт/Стоп автофарма")
 print("==========================================")
